@@ -3,6 +3,7 @@ package com.gerimedica.processor.controller;
 import com.gerimedica.processor.model.CSVResponse;
 import com.gerimedica.processor.model.CSVRow;
 import com.gerimedica.processor.service.CSVService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import java.util.List;
 public class CSVController {
     private final CSVService csvService;
 
+    @Operation(summary = "Upload CSV File", tags = "CSV Controller")
     @PostMapping
     public ResponseEntity<CSVResponse<List<CSVRow>>> upload(@RequestParam("csv") MultipartFile csv) {
         var result = csvService.upload(csv);
@@ -33,6 +35,7 @@ public class CSVController {
                                             .build());
     }
 
+    @Operation(summary = "Fetch All CSV Files", tags = "CSV Controller")
     @GetMapping
     public ResponseEntity<CSVResponse<List<CSVRow>>> fetch() {
         var result = csvService.fetch();
@@ -42,6 +45,7 @@ public class CSVController {
                                             .build());
     }
 
+    @Operation(summary = "Find CSV File by Id", tags = "CSV Controller")
     @GetMapping("/{id}")
     public ResponseEntity<CSVResponse<CSVRow>> findById(@PathVariable Integer id) {
         var result = csvService.findById(id);
@@ -53,6 +57,7 @@ public class CSVController {
                      .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Delete All CSV Files", tags = "CSV Controller")
     @DeleteMapping
     public ResponseEntity<CSVResponse<String>> deleteAll() {
         csvService.deleteAll();
